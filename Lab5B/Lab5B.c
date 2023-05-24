@@ -12,7 +12,9 @@ void inputArray(int* array, int size) {//Функція для введення 
 void generateRandomArray(int* array, int size) {//Функція для заповнення масиву випадковими числами
     srand(time(NULL));
     for (int i = 0; i < size; i++) {
+        printf("a[%d] = ", i + 1);
         array[i] = rand() % 201 - 100;
+        printf("%d\n", array[i]);
     }
 }
 int findMaxElementIndex(int* array, int size) {//Функція для знаходження індексу максимального елемента в масиві
@@ -99,11 +101,45 @@ int main() {
 
     int maxIndex = findMaxElementIndex(array, n);//Знаходження індексу максимального елемента
     int sumBetweenZeros = computeSumBetweenZeros(array, n);//Обчислення суми додатніх елементів між першим і останнім нульовими елементами
-
+    
     //Виведення результатів на екран юзера
     printf("Номер максимального елемента: %d\n", maxIndex + 1);
-    printf("Сума додатніх елементів між першим і останнім нульовими елементами: %d\n", sumBetweenZeros);
+    
+    if (sumBetweenZeros) {
+        printf("Сума додатніх елементів між першим і останнім нульовими елементами: ");
 
+        int firstZeroIndex = -1;
+        int lastZeroIndex = -1;
+
+        for (int i = 0; i < n; i++) {
+            if (array[i] == 0) {
+                if (firstZeroIndex == -1) {
+                    firstZeroIndex = i;
+                }
+                else {
+                    lastZeroIndex = i;
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (i == firstZeroIndex + 1) {
+                printf("\x1b[33m"); // Встановлюємо жовтий колір
+            }
+            else if (i == lastZeroIndex) {
+                printf("\x1b[0m"); // Повертаємо до стандартного кольору
+            }
+
+            printf("%d ", array[i]);
+        }
+
+        printf("\n");
+        printf("Сума: %d\n", sumBetweenZeros);
+    }
+    else {
+        printf("Немає елементів нульового індекса...\n");
+    }
     free(array);//Звільнення пам'яті, виділеної для масиву
     return 0;//Кінець програми
 }
